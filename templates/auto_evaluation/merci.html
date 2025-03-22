@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Merci pour votre évaluation !</h2>
+    <p>Votre auto-évaluation a bien été soumise. Nous vous remercions pour votre participation.</p>
+    <a href="{% url 'lire_evaluations' %}" class="btn btn-primary">Voir les évaluations soumises</a>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Stage</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.titre.label_tag }} {{ form.titre }}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label_tag }} {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label for="id_entreprise">{{ form.entreprise.label }}</label>
+            <select name="entreprise" id="id_entreprise" class="form-select">
+                {% for entreprise in form.entreprise.field.queryset %}
+                    <option value="{{ entreprise.id }}" {% if entreprise == form.entreprise.value %} selected {% endif %}>
+                        {{ entreprise.nom }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id_etudiant">{{ form.etudiant.label }}</label>
+            <select name="etudiant" id="id_etudiant" class="form-select">
+                {% for etudiant in form.etudiant.field.queryset %}
+                    <option value="{{ etudiant.id }}" {% if etudiant == form.etudiant.value %} selected {% endif %}>
+                        {{ etudiant.matricule }} 
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_encadrants">{{ form.encadrants.label }}</label>
+            <select name="encadrants" id="id_encadrants" class="form-select" multiple>
+                {% for encadrant in form.encadrants.field.queryset %}
+                    <option value="{{ encadrant.id }}" {% if encadrant.id in form.encadrants.value|default_if_none:'' %} selected {% endif %}>
+                        {{ encadrant.nom }} 
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        
+        <div class="mb-3">
+            {{ form.date_debut.label_tag }} {{ form.date_debut }}
+        </div>
+        <div class="mb-3">
+            {{ form.date_fin.label_tag }} {{ form.date_fin }}
+        </div>
+        <div class="mb-3">
+            <label for="id_annee">{{ form.annee.label }}</label>
+            <select name="annee" id="id_annee" class="form-select">
+                {% for annee in form.annee.field.queryset %}
+                    <option value="{{ annee.id }}" {% if annee == form.annee.value %} selected {% endif %}>
+                        {{ annee.annee }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a href="{% url 'stage_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

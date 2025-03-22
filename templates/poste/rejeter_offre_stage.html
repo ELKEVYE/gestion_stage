@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Rejeter l'Offre de Stage</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <p>Êtes-vous sûr de vouloir rejeter cette offre de stage ?</p>
+      <button type="submit" class="btn btn-danger">Rejeter</button>
+      <a href="{% url 'offres_stages' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+  </div>
+{% endblock %}

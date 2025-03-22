@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Étudiants</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* Personnalisation des couleurs du tableau */
+        table {
+            background-color: #f8f9fa; /* Gris clair */
+        }
+        thead {
+            background-color: #007bff; /* Bleu */
+            color: white;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #e9ecef; /* Gris plus clair */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Liste des Étudiants</h1>
+
+    <!-- Filtres -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un étudiant...">
+        </div>
+        {% comment %} <div class="col-md-3">
+            <select id="filterFiliere" class="form-select">
+                <option value="">Toutes les groupe</option>
+                {% for etudiant in etudiants %}
+                    <option value="{{ etudiant.groupe.nom }}">{{ etudiant.groupe.nom }}</option>
+                {% empty %}
+                    <option value="">Aucune groupe disponible</option>
+                {% endfor %}
+            </select>
+        </div> {% endcomment %}
+        <div class="col-md-3">
+            <select id="filterFiliere" class="form-select">
+                <option value="">Toutes les filières</option>
+                {% for etudiant in etudiants %}
+                    <option value="{{ etudiant.filiere.nom }}">{{ etudiant.filiere.nom }}</option>
+                {% empty %}
+                    <option value="">Aucune filière disponible</option>
+                {% endfor %}
+            </select>
+        </div>
+         <div class="col-md-3 d-flex align-items-center">
+            
+        <a href="{% url 'import_etudiants' %}" class="btn btn-info mb-3">
+            <i class="bi bi-upload"></i> Importer Excel
+        </a>
+        </div>
+</div>
+
+    <!-- Tableau des étudiants -->
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Filière</th>
+                    {% comment %} <th>Groupe</th> {% endcomment %}
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable">
+                {% for etudiant in etudiants %}
+                    <tr>
+                        <td>{{ etudiant.matricule }}</td>
+                        <td>{{ etudiant.prenom }} {{ etudiant.nom }}</td>
+                        <td>{{ etudiant.email }}</td>
+                        <td class="filiere">{{ etudiant.filiere.nom|default:"Non assigné" }}</td>
+                        {% comment %} <td class="groupe">{{ etudiant.groupe.nom|default:"Non assigné" }}</td> {% endcomment %}
+                        <td class="text-center">
+                            <a href="{% url 'etudiant_detail' etudiant.pk %}" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'etudiant_modifier' etudiant.pk %}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'etudiant_supprimer' etudiant.pk %}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun étudiant trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#studentTable tr");
+
+        rows.forEach(row => {
+            let name = row.cells[0].textContent.toLowerCase();
+            row.style.display = name.includes(filter) ? "" : "none";
+        });
+    });
+
+    document.getElementById("filterFiliere").addEventListener("change", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#studentTable tr");
+
+        rows.forEach(row => {
+            let filiere = row.querySelector(".filiere").textContent.toLowerCase();
+            row.style.display = (filter === "" || filiere === filter) ? "" : "none";
+        });
+    });
+
+    document.getElementById("filterGroupe").addEventListener("change", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#studentTable tr");
+
+        rows.forEach(row => {
+            let groupe = row.querySelector(".groupe").textContent.toLowerCase();
+            row.style.display = (filter === "" || groupe === filter) ? "" : "none";
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+{% endblock content %}

@@ -1,0 +1,200 @@
+{% extends 'layouts.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="form-card mx-auto">
+        <div class="form-header">
+            <div class="header-icon">
+                <i class="fas fa-file-contract"></i>
+            </div>
+            <h1 class="text-center mb-0">Nouvelle Offre de Stage</h1>
+            <p class="text-center text-muted">Remplissez les détails de l'offre</p>
+        </div>
+
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="form-body">
+                <!-- Entreprise -->
+                <div class="form-group floating-label">
+                    <div class="input-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <select class="form-select" id="id_entreprise" name="entreprise" required>
+                        <option value="" hidden></option>
+                        {% for entreprise in form.entreprise.field.queryset %}
+                        <option value="{{ entreprise.id }}" {% if entreprise.id == form.entreprise.value %}selected{% endif %}>
+                            {{ entreprise.nom }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <label for="id_entreprise">Entreprise</label>
+                    <div class="invalid-feedback">
+                        Veuillez sélectionner une entreprise
+                    </div>
+                </div>
+
+                <!-- Titre et Date -->
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <div class="form-group floating-label">
+                            <div class="input-icon">
+                                <i class="fas fa-heading"></i>
+                            </div>
+                            {{ form.titre }}
+                            <label for="id_titre">Intitulé du poste</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group floating-label">
+                            <div class="input-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <input type="date" class="form-control" id="id_date_limite" 
+                                   name="date_limite" required>
+                            <label for="id_date_limite">Date limite</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group floating-label">
+                    <div class="input-icon">
+                        <i class="fas fa-align-left"></i>
+                    </div>
+                    {{ form.description }}
+                    <label for="id_description">Description détaillée</label>
+                    <div class="form-text">Caractères restants : <span id="char-count">500</span></div>
+                </div>
+
+                <!-- Bouton de soumission -->
+                <div class="form-footer text-center">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
+                        <i class="fas fa-paper-plane me-2"></i>Publier l'offre
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-card {
+        max-width: 800px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        padding: 2rem;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .header-icon {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .form-body {
+        padding: 2rem;
+    }
+
+    .floating-label {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .floating-label label {
+        position: absolute;
+        left: 3rem;
+        top: 1rem;
+        transition: all 0.3s;
+        pointer-events: none;
+        color: #6b7280;
+    }
+
+    .floating-label .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        color: #6b7280;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        box-shadow: none;
+        border-color: #6366f1;
+    }
+
+    .form-control:focus ~ label,
+    .form-select:focus ~ label,
+    .form-control:not(:placeholder-shown) ~ label,
+    .form-select:not([value=""]) ~ label {
+        top: -0.8rem;
+        left: 2.5rem;
+        font-size: 0.8rem;
+        background: white;
+        padding: 0 0.5rem;
+        color: #6366f1;
+    }
+
+    .invalid-feedback {
+        display: none;
+        padding-left: 3rem;
+    }
+
+    .was-validated .form-control:invalid,
+    .was-validated .form-select:invalid {
+        border-color: #ef4444;
+    }
+
+    .was-validated .form-control:invalid ~ label,
+    .was-validated .form-select:invalid ~ label {
+        color: #ef4444;
+    }
+
+    .was-validated .form-control:invalid ~ .invalid-feedback {
+        display: block;
+    }
+
+    #id_description {
+        min-height: 150px;
+        resize: vertical;
+    }
+</style>
+
+<script>
+    // Compteur de caractères pour la description
+    document.getElementById('id_description').addEventListener('input', function(e) {
+        const maxLength = 500;
+        const remaining = maxLength - e.target.value.length;
+        document.getElementById('char-count').textContent = remaining;
+        
+        if(remaining < 0) {
+            e.target.value = e.target.value.substring(0, maxLength);
+            document.getElementById('char-count').textContent = 0;
+        }
+    });
+
+    // Validation du formulaire
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+
+{% endblock %}

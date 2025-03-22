@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">{% if form.instance.nom %}Modifier{% else %}Ajouter{% endif %} une Entreprise</h2>
+    
+    <form method="post" class="shadow-sm p-4 rounded border">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-success">Sauvegarder</button>
+            <a href="{% url 'entreprise_list' %}" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

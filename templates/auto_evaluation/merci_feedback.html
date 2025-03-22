@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Merci pour votre Feedback !</h2>
+    <p>Votre feedback a été soumis avec succès. Nous vous remercions pour votre collaboration.</p>
+    <a href="{% url 'lire_feedbacks' %}" class="btn btn-primary">Retourner a la liste</a>
+</div>
+{% endblock %}

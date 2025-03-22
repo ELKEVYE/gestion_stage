@@ -1,0 +1,83 @@
+{% extends 'layoutes.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Liste des Auto-évaluations Soumises</h2>
+    <div class="d-flex justify-content-between mb-3">
+    <a href="{% url 'remplir_auto_evaluation' %}" class="btn btn-success">Ajouter  les évaluations</a>
+    </div>
+    {% if evaluations %}
+        <div class="list-group">
+            {% for evaluation in evaluations %}
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5><strong>{{ evaluation.nom }} {{ evaluation.prenom }}</strong></h5>
+                            <p><em>Email:</em> <a href="mailto:{{ evaluation.email }}">{{ evaluation.email }}</a></p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <small class="text-muted">Évaluée le {{ evaluation.date_soumission }}</small>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-3">
+                        <strong>Relation avec l'encadrant:</strong>
+                        {% if evaluation.relation_avec_encadrant == "1" %}
+                            <span class="badge bg-success"><i class="fas fa-smile"></i> Très bonne</span>
+                        {% elif evaluation.relation_avec_encadrant == "2" %}
+                            <span class="badge bg-primary"><i class="fas fa-thumbs-up"></i> Bonne</span>
+                        {% elif evaluation.relation_avec_encadrant == "3" %}
+                            <span class="badge bg-warning"><i class="fas fa-meh"></i> Moyenne</span>
+                        {% elif evaluation.relation_avec_encadrant == "4" %}
+                            <span class="badge bg-danger"><i class="fas fa-frown"></i> Mauvaise</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non évalué</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Satisfaction des tâches:</strong>
+                        {% if evaluation.satisfaction_taches == "1" %}
+                            <span class="badge bg-success"><i class="fas fa-smile"></i> Très satisfait</span>
+                        {% elif evaluation.satisfaction_taches == "2" %}
+                            <span class="badge bg-primary"><i class="fas fa-thumbs-up"></i> Satisfait</span>
+                        {% elif evaluation.satisfaction_taches == "3" %}
+                            <span class="badge bg-warning"><i class="fas fa-meh"></i> Peu satisfait</span>
+                        {% elif evaluation.satisfaction_taches == "4" %}
+                            <span class="badge bg-danger"><i class="fas fa-frown"></i> Pas satisfait</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non évalué</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Utilité du stage:</strong>
+                        {% if evaluation.utilite_du_stage == "1" %}
+                            <span class="badge bg-success"><i class="fas fa-check-circle"></i> Très utile</span>
+                        {% elif evaluation.utilite_du_stage == "2" %}
+                            <span class="badge bg-primary"><i class="fas fa-thumbs-up"></i> Utile</span>
+                        {% elif evaluation.utilite_du_stage == "3" %}
+                            <span class="badge bg-warning"><i class="fas fa-exclamation-circle"></i> Moyennement utile</span>
+                        {% elif evaluation.utilite_du_stage == "4" %}
+                            <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Pas utile</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non évalué</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Commentaires:</strong>
+                        <p class="border p-2 bg-light rounded">{{ evaluation.commentaires|default:"Aucun commentaire." }}</p>
+                    </div>
+                    
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune évaluation soumise pour le moment.</p>
+    {% endif %}
+
+    <a href="{% url 'supprimer_evaluations' %}" class="btn btn-danger mt-3">Supprimer toutes les évaluations</a>
+</div>
+{% endblock %}

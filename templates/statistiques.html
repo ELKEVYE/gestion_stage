@@ -1,0 +1,179 @@
+{% extends "layout.html" %} 
+
+{% block title %}Statistiques des Stages{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="mb-3">
+    <a href="{% url 'export_stages_csv' %}" class="btn btn-success">📥 Exporter en CSV</a>
+    <a href="{% url 'export_stages_pdf' %}" class="btn btn-danger">📥 Exporter en PDF</a>
+</div>
+<div class="container-fluid mt-4">
+
+    <h2 class="text-center text-primary mb-4">Statistiques des Stages</h2>
+
+    <!-- Tableau des statistiques globales -->
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>État du Stage</th>
+                        <th>Nombre de Stages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Stages en cours</td>
+                        <td>{{ stages_en_cours }}</td>
+                    </tr>
+                    <tr>
+                        <td>Stages validés</td>
+                        <td>{{ stages_valides }}</td>
+                    </tr>
+                    <tr>
+                        <td>Stages avec soutenance prévue</td>
+                        <td>{{ stages_soutenance }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tableau des stages par année -->
+    <h4 class="mt-4 text-primary">Stages par Année</h4>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>Année</th>
+                        <th>Nombre de Stages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in stages_par_annee %}
+                    <tr>
+                        <td>{{ entry.annee__annee }}</td>
+                        <td>{{ entry.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tableau des stages par filière -->
+    <h4 class="mt-4 text-primary">Stages par Filière</h4>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="bg-secondary text-white">
+                    <tr>
+                        <th>Filière</th>
+                        <th>Nombre de Stages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in stages_par_filiere %}
+                    <tr>
+                        <td>{{ entry.etudiant__filiere__nom }}</td>
+                        <td>{{ entry.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tableau des stages par entreprise -->
+    <h4 class="mt-4 text-primary">Stages par Entreprise</h4>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="bg-success text-white">
+                    <tr>
+                        <th>Entreprise</th>
+                        <th>Nombre de Stages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in stages_par_entreprise %}
+                    <tr>
+                        <td>{{ entry.entreprise__nom }}</td>
+                        <td>{{ entry.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <h4 class="mt-4 text-primary">Visualisation Graphique</h4>
+    <div class="row">
+        <div class="col-12">
+            <canvas id="stagesChart" class="mb-4"></canvas>
+            <canvas id="stagesPerYearChart" class="mb-4"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- Inclusion de Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Graphique des statistiques globales
+        var ctx1 = document.getElementById('stagesChart').getContext('2d');
+        var stagesChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ["Stages en cours", "Stages validés", "Stages avec soutenance prévue"],
+                datasets: [{
+                    label: 'Nombre de Stages',
+                    data: [{{ stages_en_cours }}, {{ stages_valides }}, {{ stages_soutenance }}],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return tooltipItem.raw + ' stages';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Graphique des stages par année
+        var ctx2 = document.getElementById('stagesPerYearChart').getContext('2d');
+        var stagesPerYearChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: [{% for entry in stages_par_annee %}"{{ entry.annee__annee }}",{% endfor %}],
+                datasets: [{
+                    label: 'Nombre de Stages par Année',
+                    data: [{% for entry in stages_par_annee %}{{ entry.total }},{% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

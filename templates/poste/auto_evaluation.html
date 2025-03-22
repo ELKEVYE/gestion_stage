@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Auto-évaluation de votre stage</h2>
+        <form method="POST" action="{% url 'auto_evaluer' %}">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="accueil" class="form-label">Comment évaluez-vous l'accueil dans l'entreprise ?</label>
+                <input type="text" class="form-control" name="accueil" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="suivi" class="form-label">Évaluez le suivi par votre encadrant.</label>
+                <input type="text" class="form-control" name="suivi" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="competences" class="form-label">Avez-vous développé de nouvelles compétences ?</label>
+                <input type="text" class="form-control" name="competences" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="satisfaction" class="form-label">Êtes-vous satisfait de votre stage en général ?</label>
+                <input type="text" class="form-control" name="satisfaction" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Envoyer l'évaluation</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Détails de {{ encadrant.prenom }} {{ encadrant.nom }}</h2>
+    <p><strong>Établissement :</strong> {{ encadrant.etablissement }}</p>
+
+    <a href="{% url 'encadrant_list' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
+{% endblock %}
