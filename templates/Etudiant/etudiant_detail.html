@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Étudiant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center">{{ etudiant.prenom }} {{ etudiant.nom }}</h2>
+        <hr>
+        <p><strong>Email :</strong> {{ etudiant.email }}</p>
+        <p><strong>Filière :</strong> {{ etudiant.filiere.nom|default:"Non assigné" }}</p>
+        <p><strong>Groupe :</strong> {{ etudiant.groupe.nom|default:"Non assigné" }}</p>
+
+        <div class="d-flex justify-content-center gap-3 mt-3">
+            <a href="{% url 'etudiant_modifier' etudiant.pk %}" class="btn btn-warning">Modifier</a>
+            <a href="{% url 'etudiant_supprimer' etudiant.pk %}" class="btn btn-danger">Supprimer</a>
+            <a href="{% url 'etudiant_list' %}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+{% endblock content %}

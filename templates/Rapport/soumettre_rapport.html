@@ -1,0 +1,23 @@
+{% extends 'layoutes.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">📤 Soumettre un Rapport</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="titre" class="form-label">Titre du rapport</label>
+            <input type="text" class="form-control" id="titre" name="titre" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="fichier" class="form-label">Fichier PDF</label>
+            <input type="file" class="form-control" id="fichier" name="fichier" accept=".pdf" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">📤 Soumettre</button>
+    </form>
+</div>
+{% endblock %}

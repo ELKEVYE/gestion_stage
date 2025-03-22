@@ -1,0 +1,107 @@
+{% extends 'layoutes.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Auto-évaluation de votre Stage</h2>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Formulaire d'auto-évaluation -->
+        <div class="mb-3">
+            <label for="id_nom" class="form-label">Nom de l'étudiant</label>
+            <input type="text" name="nom" id="id_nom" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_prenom" class="form-label">Prénom de l'étudiant</label>
+            <input type="text" name="prenom" id="id_prenom" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email de l'étudiant</label>
+            <input type="email" name="email" id="id_email" class="form-control" required>
+        </div>
+
+        <!-- Évaluation du stage -->
+<div class="mb-3">
+    <label for="id_relation_avec_encadrant" class="form-label">Relation avec l'encadrant</label>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="relation_avec_encadrant" value="1" class="form-check-input" required> Très bonne
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="relation_avec_encadrant" value="2" class="form-check-input" required> Bonne
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="relation_avec_encadrant" value="3" class="form-check-input" required> Moyenne
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="relation_avec_encadrant" value="4" class="form-check-input" required> Mauvaise
+        </label>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="id_satisfaction_taches" class="form-label">Satisfaction des tâches confiées</label>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="satisfaction_taches" value="1" class="form-check-input" required> Très satisfait
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="satisfaction_taches" value="2" class="form-check-input" required> Satisfait
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="satisfaction_taches" value="3" class="form-check-input" required> Peu satisfait
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="satisfaction_taches" value="4" class="form-check-input" required> Pas satisfait
+        </label>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="id_utilite_du_stage" class="form-label">Utilité du stage pour votre parcours</label>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="utilite_du_stage" value="1" class="form-check-input" required> Très utile
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="utilite_du_stage" value="2" class="form-check-input" required> Utile
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="utilite_du_stage" value="3" class="form-check-input" required> Moyennement utile
+        </label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" name="utilite_du_stage" value="4" class="form-check-input" required> Pas utile
+        </label>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="id_commentaires" class="form-label">Commentaires (facultatif)</label>
+    <textarea name="commentaires" id="id_commentaires" class="form-control" rows="4"></textarea>
+</div>
+
+
+        <button type="submit" class="btn btn-primary">Soumettre l'évaluation</button>
+    </form>
+</div>
+{% endblock %}

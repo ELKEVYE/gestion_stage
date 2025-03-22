@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">{{ entreprise.nom }}</h2>
+    
+    <div class="card shadow-sm p-4 rounded">
+        <div class="card-body">
+            <p><strong>Description :</strong> {{ entreprise.description|default:"Non renseignée" }}</p>
+            <p><strong>Adresse :</strong> {{ entreprise.adresse|default:"Non renseignée" }}</p>
+            <p><strong>Email :</strong> {{ entreprise.email|default:"Non renseigné" }}</p>
+            
+            <a href="{% url 'entreprise_list' %}" class="btn btn-primary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

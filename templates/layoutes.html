@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}  
+	<!-- Boxicons -->
+	<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	
+	<!-- FontAwesome Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  {% block style %}{% endblock style %}
+  <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}"/>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    /* Style pour le menu */
+    .sidebar-menu li a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
+
+    /* Espacement des icônes */
+    .sidebar-menu li a i {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    /* Effet hover */
+    .sidebar-menu li a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+
+    /* Couleurs des icônes */
+    .icon-blue { color: #4A90E2; } /* Bleu */
+    .icon-green { color: #27AE60; } /* Vert */
+    .icon-orange { color: #E67E22; } /* Orange */
+    .icon-red { color: #E74C3C; } /* Rouge */
+    .icon-yellow { color: #F1C40F; } /* Jaune */
+    .icon-purple { color: #9B59B6; } /* Violet */
+    .icon-cyan { color: #00BCD4; } /* Cyan */
+</style>
+	<title>Gestion de stage</title>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-smile'></i>
+			<span class="text">Gestions des stages</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="/home/">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="/evaluations/">
+					<i class='bx bx-list-check icon-red'></i> <!-- Icône rouge -->
+					<span class="text">Évaluations</span>
+				</a>
+			</li>
+            <li>
+				<a href="/mes-rapports/">
+					<i class='bx bx-list-check icon-red'></i> <!-- Icône rouge -->
+					<span class="text">Rapport</span>
+				</a>
+			</li>
+			
+		</ul>
+		</ul>
+		{% comment %} <ul class="side-menu"> {% endcomment %}
+			
+		{% comment %} </ul> {% endcomment %}
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	{% comment %} <style>
+		/* Style général */
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+		}
+	
+		/* Barre de navigation */
+		nav {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background: linear-gradient(135deg, #007bff, #6610f2);
+			padding: 15px 20px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			color: white;
+		}
+	
+		/* Icône du menu */
+		nav i.bx-menu {
+			font-size: 24px;
+			cursor: pointer;
+			transition: 0.3s;
+		}
+	
+		nav i.bx-menu:hover {
+			color: #ffcc00;
+			transform: scale(1.1);
+		}
+	
+		/* Mode sombre switch */
+		.switch-mode {
+			width: 40px;
+			height: 20px;
+			background: #ddd;
+			border-radius: 10px;
+			cursor: pointer;
+			position: relative;
+		}
+	
+		.switch-mode::before {
+			content: "";
+			position: absolute;
+			width: 18px;
+			height: 18px;
+			background: white;
+			border-radius: 50%;
+			top: 1px;
+			left: 2px;
+			transition: 0.3s;
+		}
+	
+		#switch-mode:checked + .switch-mode::before {
+			left: 20px;
+			background: #ffcc00;
+		}
+	
+		/* Contenu principal */
+		main {
+			padding: 20px;
+			background: white;
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			margin: 20px;
+		}
+	</style> {% endcomment %}
+	
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu'></i>
+			
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+		</nav>
+		<!-- NAVBAR -->
+	
+		<!-- MAIN -->
+		<main>
+			{% block content %}{% endblock content %}
+		</main>
+		<!-- MAIN -->
+	</section>
+	
+	<!-- CONTENT -->
+	
+  <script src="{% static 'js/Script.js' %}"></script>
+  {% block script %}{% endblock script %}
+</body>
+</html>
