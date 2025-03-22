@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}  
+	<!-- Boxicons -->
+	<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<!-- My CSS -->
+	<style>
+		/* Style pour le menu */
+		.sidebar-menu li a {
+			display: flex;
+			align-items: center;
+			padding: 10px;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+			transition: 0.3s ease;
+		}
+	
+		/* Espacement des icônes */
+		.sidebar-menu li a i {
+			font-size: 20px;
+			margin-right: 10px;
+		}
+	
+		/* Effet hover */
+		.sidebar-menu li a:hover {
+			background-color: rgba(255, 255, 255, 0.2);
+			transform: scale(1.05);
+		}
+	
+		/* Couleurs des icônes */
+		.icon-blue { color: #4A90E2; } /* Bleu */
+		.icon-green { color: #27AE60; } /* Vert */
+		.icon-orange { color: #E67E22; } /* Orange */
+		.icon-red { color: #E74C3C; } /* Rouge */
+		.icon-yellow { color: #F1C40F; } /* Jaune */
+		.icon-purple { color: #9B59B6; } /* Violet */
+		.icon-cyan { color: #00BCD4; } /* Cyan */
+	</style>
+  {% block style %}{% endblock style %}
+  <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}"/>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Gestion de stage</title>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-smile'></i>
+			<span class="text">Gestions des stages</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="/home/">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="/offres/">
+					<i class='bx bx-briefcase-alt-2 icon-cyan'></i> <!-- Icône cyan -->
+					<span class="text">Offres de Stage</span>
+				</a>
+			</li>
+		
+			
+			</li>
+		
+			<li>
+				<a href="/generer_attestation/">
+					<i class='bx bx-certification icon-green'></i> <!-- Icône verte -->
+					<span class="text">Attestation</span>
+				</a>
+			</li>
+		
+			<li>
+				<a href="/liste_feedbacks/">
+					<i class='bx bx-comment-detail icon-purple'></i> <!-- Icône violet -->
+					<span class="text">Liste des Feedbacks</span>
+				</a>
+			</li>
+		</ul>
+		</ul>
+		{% comment %} <ul lass="side-menu"> {% endcomment %}
+			
+		{% comment %} </ul> {% endcomment %}
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			{% comment %} <a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a> {% endcomment %}
+			{% comment %} <a href="#" class="profile">
+				<img src="img/people.png">
+			</a> {% endcomment %}
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			
+
+
+      {% block content %}{% endblock content %}
+	
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+  <script src="{% static 'js/Script.js' %}"></script>
+  {% block script %}{% endblock script %}
+</body>
+</html>

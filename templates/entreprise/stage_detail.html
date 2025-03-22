@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">{{ stage.titre }}</h2>
+    <p><strong>Description :</strong> {{ stage.description }}</p>
+    <p><strong>Entreprise :</strong> {{ stage.entreprise.nom }}</p>
+    <p><strong>Étudiant :</strong> {{ stage.etudiant.nom }}</p>
+    <p><strong>Encadrants :</strong> 
+        {% for encadrant in stage.encadrants.all %}
+            {{ encadrant.nom }} {{ encadrant.prenom }},
+        {% endfor %}
+    </p>
+    <p><strong>Date de début :</strong> {{ stage.date_debut }}</p>
+    <p><strong>Date de fin :</strong> {{ stage.date_fin }}</p>
+    <p><strong>Année :</strong> {{ stage.annee.annee }}</p>
+    
+    <a href="{% url 'stage_list' %}" class="btn btn-secondary">Retour</a>
+</div>
+{% endblock %}

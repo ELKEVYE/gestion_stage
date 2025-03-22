@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* Style personnalisé */
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .btn-primary {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .btn-primary i {
+        margin-left: 10px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="form-container">
+        <h2 class="text-center mb-4"><i class="fas fa-user-check"></i> Feedback sur la performance</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Nom de l'entreprise -->
+            <div class="mb-3">
+                <label for="id_entreprise" class="form-label"><i class="fas fa-building"></i> Nom de l'entreprise</label>
+                {{ form.entreprise }}
+            </div>
+
+            <!-- Nom de l'étudiant -->
+            <div class="mb-3">
+                <label for="id_etudiant" class="form-label"><i class="fas fa-user-graduate"></i> Nom de l'étudiant</label>
+                {{ form.etudiant }}
+            </div>
+
+            <!-- Performance de l'étudiant -->
+            <div class="mb-3">
+                <label for="id_performance" class="form-label"><i class="fas fa-chart-line"></i> Performance de l'étudiant</label>
+                {{ form.performance }}
+            </div>
+
+            <!-- Commentaires supplémentaires -->
+            <div class="mb-3">
+                <label for="id_commentaires" class="form-label"><i class="fas fa-comments"></i> Commentaires supplémentaires</label>
+                {{ form.commentaires }}
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit" class="btn btn-primary">
+                Soumettre le Feedback <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

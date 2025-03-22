@@ -1,0 +1,29 @@
+{% extends 'layouts.html' %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 800px; background: #f8f9fa; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h2 class="text-center mb-4" style="color: #333;">Liste des Feedbacks Soumis</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'feedback_entreprise' %}" class="btn btn-success">Ajouter les feedback</a>
+    </div>
+    {% if feedbacks %}
+        <div class="list-group">
+            {% for feedback in feedbacks %}
+                <div class="list-group-item p-4 mb-3" style="border-radius: 8px; background: #ffffff; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                    <h5 class="text-primary"><strong>{{ feedback.entreprise }} - {{ feedback.etudiant }}</strong></h5>
+                    <p><strong>Performance générale:</strong> {{ feedback.performance }}</p>
+                    <p><strong>Commentaires:</strong> {{ feedback.commentaires }}</p>
+
+                    <!-- Bouton de suppression -->
+                    <form method="POST" action="{% url 'supprimer_feedback' forloop.counter0 %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">Aucun feedback soumis pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

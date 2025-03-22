@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Entreprises</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Liste des Entreprises</h2>
+    
+        <div class="d-flex justify-content-between mb-3">
+            <input type="text" id="searchInput" class="form-control w-50" placeholder="Rechercher une entreprise...">
+            <a href="{% url 'entreprise_create' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Ajouter une entreprise
+            </a>
+        </div>
+    
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-light">
+                <thead class="bg-primary text-white shadow-sm text-center">
+                    <tr>
+                        <th>Nom</th>
+                        <th>specialite</th>
+                        <th>Adresse</th>
+                        <th>Email</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="entrepriseTable">
+                    {% for entreprise in entreprises %}
+                        <tr>
+                            <td>{{ entreprise.nom }}</td>
+                            <td>{{ entreprise.description|default:"Non renseigné" }}</td>
+                            <td>{{ entreprise.adresse|default:"Non renseigné" }}</td>
+                            <td>{{ entreprise.email|default:"Non renseigné" }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'entreprise_detail' entreprise.id %}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'entreprise_update' entreprise.id %}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'entreprise_delete' entreprise.id %}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Aucune entreprise trouvée.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#entrepriseTable tr");
+
+        rows.forEach(row => {
+            let text = row.innerText.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+{% endblock content %}

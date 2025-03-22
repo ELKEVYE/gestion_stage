@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Liste des Stages</h2>
+
+    <!-- Formulaire de recherche -->
+    <form method="get" action="{% url 'stage_list' %}" class="mb-3">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <input type="text" name="search_etudiant" class="form-control" 
+                       placeholder="Rechercher par étudiant" value="{{ request.GET.search_etudiant }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="search_entreprise" class="form-control" 
+                       placeholder="Rechercher par entreprise" value="{{ request.GET.search_entreprise }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="search_encadrant" class="form-control" 
+                       placeholder="Rechercher par encadrant" value="{{ request.GET.search_encadrant }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="search_annee" class="form-control" 
+                       placeholder="Rechercher par année" value="{{ request.GET.search_annee }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Formulaire de filtrage -->
+    <form method="get" action="{% url 'stage_list' %}" class="mb-3">
+        <div class="row g-2">
+            <div class="col-md-4">
+                <select name="filter_status" class="form-select">
+                    <option value="">Tous les stages</option>
+                    <option value="en_cours" {% if request.GET.filter_status == "en_cours" %}selected{% endif %}>
+                        Stages en cours
+                    </option>
+                    <option value="soutenance" {% if request.GET.filter_status == "soutenance" %}selected{% endif %}>
+                        Stages en soutenance
+                    </option>
+                    <option value="valide" {% if request.GET.filter_status == "valide" %}selected{% endif %}>
+                        Stages validés
+                    </option>
+                    <option value="attente" {% if request.GET.filter_status == "attente" %}selected{% endif %}>
+                        Stages en attente de validation
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter"></i> Filtrer
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Liste des Stages</h2>
+
+    <a href="{% url 'stage_create' %}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Ajouter un Stage
+    </a>
+
+    <table id="stagesTable" class="table table-bordered table-hover">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Titre</th>
+                <th>Entreprise</th>
+                <th>Étudiant</th>
+                <th>Encadrants</th>
+                <th>Année</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stage in stages %}
+            <tr>
+                <td>{{ stage.titre }}</td>
+                <td>{{ stage.entreprise.nom }}</td>
+                <td>{{ stage.etudiant.matricule }}</td>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        {% for encadrant in stage.encadrants.all %}
+                            <li><i class="fas fa-user-tie text-secondary"></i> {{ encadrant.nom }} </li>
+                        {% empty %}
+                            <li class="text-muted">Aucun encadrant</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ stage.annee.annee }}</td>
+                <td class="text-center">
+                    <a href="{% url 'stage_detail' stage.pk %}" class="btn btn-info btn-sm">
+                        <i class="fas fa-eye"></i> Détails
+                    </a>
+                    <a href="{% url 'stage_update' stage.pk %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    <a href="{% url 'stage_delete' stage.pk %}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Aucun stage trouvé.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#stagesTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/French.json"  // Traduction en français
+            },
+            "paging": true,         // Active la pagination
+            "searching": true,      // Active la recherche
+            "ordering": true,       // Active le tri des colonnes
+            "info": true            // Affiche les infos du tableau
+        });
+    });
+</script>
+{% endblock %}

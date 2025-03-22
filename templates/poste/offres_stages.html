@@ -1,0 +1,179 @@
+{% extends 'layouts.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📢 Offres de Stage</h2>
+
+    <!-- Bouton Ajouter une Offre -->
+    <div class="text-center mb-4">
+        <a href="{% url 'ajouter_offre_stage' %}" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus"></i> Ajouter une Offre de Stage
+        </a>
+    </div>
+
+    <!-- Section En Attente -->
+    <h3 class="section-title text-warning">⏳ En attente de validation</h3>
+    <div class="offer-list">
+        {% for offre in offres_attente %}
+        <div class="offer-card">
+            <h4>{{ offre.titre }}</h4>
+            <p><strong>🏢 Entreprise :</strong> {{ offre.entreprise.nom }}</p>
+            <p><strong>📅 Date Limite :</strong> {{ offre.date_limite }}</p>
+            <div class="actions">
+                <a href="{% url 'valider_offre_stage' offre.pk %}" class="btn btn-success">✔ Valider</a>
+                <a href="{% url 'rejeter_offre_stage' offre.pk %}" class="btn btn-danger">✖ Rejeter</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-data">🚫 Aucune offre en attente.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Section Offres Validées -->
+    <h3 class="section-title text-success">✅ Offres Validées</h3>
+    <div class="offer-list">
+        {% for offre in offres_validees %}
+        <div class="offer-card">
+            <h4>{{ offre.titre }}</h4>
+            <p><strong>🏢 Entreprise :</strong> {{ offre.entreprise.nom }}</p>
+            <p><strong>📅 Date Limite :</strong> {{ offre.date_limite }}</p>
+            <span id="offre-{{ offre.pk }}" 
+                  class="badge status {% if offre.pris %}bg-success{% else %}bg-warning{% endif %}" 
+                  onclick="togglePris({{ offre.pk }})">
+                {% if offre.pris %}🎓 Pris par un étudiant{% else %}⚠ Non pris{% endif %}
+            </span>
+        </div>
+        {% empty %}
+        <p class="no-data">🚫 Aucune offre validée.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Section Offres Expirées -->
+    {% comment %} <h3 class="section-title text-danger">❌ Offres Expirées</h3>
+    <div class="offer-list">
+        {% for offre in offres_expirees %}
+        <div class="offer-card expired">
+            <h4>{{ offre.titre }}</h4>
+            <p><strong>🏢 Entreprise :</strong> {{ offre.entreprise.nom }}</p>
+            <p><strong>📅 Date Limite :</strong> {{ offre.date_limite }}</p>
+            <p class="text-danger">⏳ Cette offre est expirée.</p>
+        </div>
+        {% empty %}
+        <p class="no-data">🚫 Aucune offre expirée.</p>
+        {% endfor %}
+    </div> {% endcomment %}
+</div>
+
+<!-- JavaScript pour basculer l'état "Pris / Non pris" -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("[id^='offre-']").forEach(function (element) {
+            let offreId = element.id.split("-")[1];
+            let status = localStorage.getItem("offre_" + offreId);
+        
+            if (status === "pris") {
+                element.classList.remove("bg-warning");
+                element.classList.add("bg-success");
+                element.innerText = "🎓 Pris par un étudiant";
+            } else {
+                element.classList.remove("bg-success");
+                element.classList.add("bg-warning");
+                element.innerText = "⚠ Non pris";
+            }
+        });
+    });
+
+    function togglePris(offreId) {
+        let element = document.getElementById("offre-" + offreId);
+    
+        // Vérifie si l'offre est déjà prise
+        if (element.classList.contains("bg-success")) {
+            alert("Cette offre a déjà été prise et ne peut plus être modifiée.");
+            return;
+        }
+    
+        // Si elle n'est pas prise, on peut la changer en "Pris"
+        element.classList.remove("bg-warning");
+        element.classList.add("bg-success");
+        element.innerText = "🎓 Pris par un étudiant";
+        localStorage.setItem("offre_" + offreId, "pris");
+    }
+    
+    
+</script>
+
+<!-- CSS Styling -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f6f9;
+    }
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .offer-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .offer-card {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+        width: calc(33.333% - 10px);
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+    }
+
+    .offer-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .actions .btn {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .bg-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .bg-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 10px;
+        color: #888;
+    }
+
+    .expired {
+        background: #f8d7da;
+        border-left: 5px solid #dc3545;
+    }
+</style>
+
+{% endblock %}
